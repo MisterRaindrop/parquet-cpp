@@ -1,0 +1,12 @@
+version: '3.3'
+
+services:
+  parquet-cpp-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: parquet-cpp-dev
+    volumes:
+      - ../:/code
+    working_dir: /code
+    command: tail -f /dev/null
