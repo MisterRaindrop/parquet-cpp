@@ -15,28 +15,27 @@
 # specific language governing permissions and limitations
 # under the License.
 
-cmake_minimum_required(VERSION 3.25)
+# To use this, install the python package `pre-commit` and
+# run once `pre-commit install`. This will setup a git pre-commit-hook
+# that is executed on each commit and will report the linting problems.
+# To run all hooks on all files use `pre-commit run -a`
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif()
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
 
-project(Parquet
-        VERSION 0.1.0
-        DESCRIPTION "Parquet C++ Project"
-        LANGUAGES CXX)
+  - repo: https://github.com/pre-commit/mirrors-clang-format
+    rev: v19.1.5
+    hooks:
+      - id: clang-format
+        exclude: ^test/resources/.*\.json$
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-include(GNUInstallDirs)
-
-set(PARQUET_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
-set(PARQUET_INSTALL_BINDIR "${CMAKE_INSTALL_BINDIR}")
-set(PARQUET_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
-set(PARQUET_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
-set(PARQUET_INSTALL_DOCDIR "${CMAKE_INSTALL_DOCDIR}")
-
-install(FILES LICENSE DESTINATION ${PARQUET_INSTALL_DOCDIR})
+  - repo: https://github.com/cheshirekow/cmake-format-precommit
+    rev: v0.6.10
+    hooks:
+      - id: cmake-format

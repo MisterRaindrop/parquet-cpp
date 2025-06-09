@@ -1,0 +1,96 @@
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements.  See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership.  The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License.  You may obtain a copy of the License at
+#
+#   http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied.  See the License for the
+# specific language governing permissions and limitations
+# under the License.
+
+name: Test
+
+on:
+  push:
+    branches:
+      - '**'
+      - '!dependabot/**'
+    tags:
+      - '**'
+  pull_request:
+
+concurrency:
+  group: ${{ github.repository }}-${{ github.head_ref || github.sha }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  PARQUET_HOME: /tmp/parquet
+
+jobs:
+  ubuntu:
+    name: AMD64 Ubuntu 24.04
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout parquet-cpp
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Build Parquet
+        shell: bash
+        run: ci/scripts/build_parquet.sh $(pwd)
+      - name: Build Example
+        shell: bash
+        run: ci/scripts/build_example.sh $(pwd)/example
+  macos:
+    name: AArch64 macOS 15
+    runs-on: macos-15
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout parquet-cpp
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Build Parquet
+        shell: bash
+        run: ci/scripts/build_parquet.sh $(pwd)
+      - name: Build Example
+        shell: bash
+        run: ci/scripts/build_example.sh $(pwd)/example
+  windows:
+    name: AMD64 Windows 2022
+    runs-on: windows-2022
+    timeout-minutes: 30
+    steps:
+      - name: Checkout parquet-cpp
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+      - name: Install ZLIB
+        shell: cmd
+        run: |
+          vcpkg install zlib:x64-windows
+      - name: Build Parquet
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          bash -c "ci/scripts/build_parquet.sh $(pwd)"
+      - name: Build Example
+        shell: cmd
+        run: |
+          call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          bash -c "ci/scripts/build_example.sh $(pwd)/example"

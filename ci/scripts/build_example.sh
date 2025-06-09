@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+#
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,28 +17,37 @@
 # specific language governing permissions and limitations
 # under the License.
 
-cmake_minimum_required(VERSION 3.25)
+set -eux
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif()
+source_dir=${1}
+build_dir=${1}/build
 
-project(Parquet
-        VERSION 0.1.0
-        DESCRIPTION "Parquet C++ Project"
-        LANGUAGES CXX)
+mkdir ${build_dir}
+pushd ${build_dir}
 
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+is_windows() {
+    [[ "${OSTYPE}" == "msys" || "${OSTYPE}" == "win32" ]]
+}
 
-include(GNUInstallDirs)
+CMAKE_ARGS=(
+    "-DCMAKE_PREFIX_PATH=${CMAKE_INSTALL_PREFIX:-${PARQUET_HOME}}"
+)
 
-set(PARQUET_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
-set(PARQUET_INSTALL_BINDIR "${CMAKE_INSTALL_BINDIR}")
-set(PARQUET_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
-set(PARQUET_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
-set(PARQUET_INSTALL_DOCDIR "${CMAKE_INSTALL_DOCDIR}")
+if is_windows; then
+    CMAKE_ARGS+=("-DCMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake")
+    CMAKE_ARGS+=("-DCMAKE_BUILD_TYPE=Release")
+else
+    CMAKE_ARGS+=("-DCMAKE_BUILD_TYPE=Debug")
+fi
 
-install(FILES LICENSE DESTINATION ${PARQUET_INSTALL_DOCDIR})
+cmake "${CMAKE_ARGS[@]}" ${source_dir}
+if is_windows; then
+  cmake --build . --config Release
+else
+  cmake --build .
+fi
+
+popd
+
+# clean up between builds
+rm -rf ${build_dir}

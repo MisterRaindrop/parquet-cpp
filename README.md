@@ -9,7 +9,7 @@ This library provides a pure C++20 implementation for seamless reading and writi
 
 ## Core Features
  - 📊 Native C++ Implementation: Zero external dependencies (no Java VM, Arrow, or Boost required)
- - 🔧 Full Format Support:  
+ - 🔧 Full Format Support:
     - All Parquet data types (INT96, BYTE_ARRAY, FIXED_LEN_BYTE_ARRAY, etc.)
     - Compressions: Snappy, Zstandard, GZIP, LZ4, Brotli
     - Encodings: PLAIN, RLE, DELTA_BINARY_PACKED, BYTE_STREAM_SPLIT
@@ -22,7 +22,7 @@ This library provides a pure C++20 implementation for seamless reading and writi
 
 ## Build
 
-### Simple Build, Run Test and Install 
+### Simple Build, Run Test and Install
 ```
 cd parquet-cpp
 cmake -S . -B build -DCMAKE_INSTALL_PREFIX=/path/to/install
@@ -36,4 +36,3 @@ parquet-cpp is open to people who want to contribute to it. Here are some ways t
 
 ## License
 Licensed under the Apache License, Version 2.0
-

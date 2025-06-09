@@ -15,28 +15,11 @@
 # specific language governing permissions and limitations
 # under the License.
 
+# Please set CMAKE_PREFIX_PATH to the install prefix of iceberg.
 cmake_minimum_required(VERSION 3.25)
 
-if(NOT CMAKE_BUILD_TYPE)
-  set(CMAKE_BUILD_TYPE Debug)
-endif()
-
-project(Parquet
-        VERSION 0.1.0
-        DESCRIPTION "Parquet C++ Project"
-        LANGUAGES CXX)
+project(example)
 
 set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-include(GNUInstallDirs)
-
-set(PARQUET_INSTALL_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
-set(PARQUET_INSTALL_BINDIR "${CMAKE_INSTALL_BINDIR}")
-set(PARQUET_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
-set(PARQUET_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
-set(PARQUET_INSTALL_DOCDIR "${CMAKE_INSTALL_DOCDIR}")
-
-install(FILES LICENSE DESTINATION ${PARQUET_INSTALL_DOCDIR})
+add_executable(demo_example demo_example.cc)
