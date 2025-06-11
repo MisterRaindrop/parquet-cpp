@@ -14,12 +14,18 @@
 # KIND, either express or implied.  See the License for the
 # specific language governing permissions and limitations
 # under the License.
+#
+# This config sets the following variables in your project::
+#
+#   Parquet_FOUND - true if Parquet found on the system
+#   Parquet_VERSION - version of the found Parquet
+#
+# This config sets the following targets (if built) in your project::
+#
+#   Parquet::parquet
+#   Parquet::parquet_static
 
-# Please set CMAKE_PREFIX_PATH to the install prefix of parquet.
-cmake_minimum_required(VERSION 3.25)
+@PACKAGE_INIT@
 
-project(example)
-
-set(CMAKE_CXX_STANDARD 20)
-
-add_executable(demo_example demo_example.cc)
+set(PARQUET_BUILD_STATIC "@PARQUET_BUILD_STATIC@")
+set(PARQUET_SYSTEM_DEPENDENCIES "@PARQUET_SYSTEM_DEPENDENCIES@")
