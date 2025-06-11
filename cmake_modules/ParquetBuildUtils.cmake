@@ -149,7 +149,7 @@ function(add_parquet_lib LIB_NAME)
 
     target_link_libraries(${LIB_NAME}_shared
                           PUBLIC "$<BUILD_INTERFACE:${ARG_SHARED_LINK_LIBS}>"
-      "$<INSTALL_INTERFACE:${ARG_SHARED_INSTALL_INTERFACE_LIBS}>"
+"$<INSTALL_INTERFACE:${ARG_SHARED_INSTALL_INTERFACE_LIBS}>"
                           PRIVATE ${ARG_SHARED_PRIVATE_LINK_LIBS})
 
     target_link_libraries(${LIB_NAME}_shared
@@ -212,7 +212,7 @@ function(add_parquet_lib LIB_NAME)
     endif()
 
     target_link_libraries(${LIB_NAME}_static
-                            PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
+                          PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
 
     install(TARGETS ${LIB_NAME}_static
             EXPORT parquet_targets
