@@ -24,9 +24,9 @@ endif()
 list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
 project(Parquet
-  VERSION 0.1.0
-  DESCRIPTION "Parquet C++ Project"
-  LANGUAGES CXX)
+        VERSION 0.1.0
+        DESCRIPTION "Parquet C++ Project"
+        LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)

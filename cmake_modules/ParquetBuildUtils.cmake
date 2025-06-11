@@ -25,47 +25,47 @@ function(parquet_install_cmake_package PACKAGE_NAME EXPORT_NAME)
   set(CONFIG_CMAKE "${PACKAGE_NAME}Config.cmake")
   set(BUILT_CONFIG_CMAKE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_CMAKE}")
   configure_package_config_file("${CONFIG_CMAKE}.in" "${BUILT_CONFIG_CMAKE}"
-    INSTALL_DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}"
+                                INSTALL_DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}"
   )
   set(CONFIG_VERSION_CMAKE "${PACKAGE_NAME}ConfigVersion.cmake")
   set(BUILT_CONFIG_VERSION_CMAKE "${CMAKE_CURRENT_BINARY_DIR}/${CONFIG_VERSION_CMAKE}")
   write_basic_package_version_file("${BUILT_CONFIG_VERSION_CMAKE}"
-    COMPATIBILITY SameMajorVersion)
+                                   COMPATIBILITY SameMajorVersion)
   install(FILES "${BUILT_CONFIG_CMAKE}" "${BUILT_CONFIG_VERSION_CMAKE}"
-    DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}")
+          DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}")
   set(TARGETS_CMAKE "${PACKAGE_NAME}Targets.cmake")
   install(EXPORT ${EXPORT_NAME}
-    DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}"
-    NAMESPACE "${PACKAGE_NAME}::"
-    FILE "${TARGETS_CMAKE}")
+          DESTINATION "${PARQUET_INSTALL_CMAKEDIR}/${PACKAGE_NAME}"
+          NAMESPACE "${PACKAGE_NAME}::"
+          FILE "${TARGETS_CMAKE}")
 endfunction()
 
 function(add_parquet_lib LIB_NAME)
   set(options)
   set(one_value_args
-    BUILD_SHARED
-    BUILD_STATIC
-    INSTALL_ARCHIVE_DIR
-    INSTALL_LIBRARY_DIR
-    INSTALL_RUNTIME_DIR
-    SHARED_LINK_FLAGS)
+      BUILD_SHARED
+      BUILD_STATIC
+      INSTALL_ARCHIVE_DIR
+      INSTALL_LIBRARY_DIR
+      INSTALL_RUNTIME_DIR
+      SHARED_LINK_FLAGS)
   set(multi_value_args
-    SOURCES
-    OUTPUTS
-    STATIC_LINK_LIBS
-    SHARED_LINK_LIBS
-    SHARED_PRIVATE_LINK_LIBS
-    EXTRA_INCLUDES
-    PRIVATE_INCLUDES
-    DEPENDENCIES
-    DEFINITIONS
-    SHARED_INSTALL_INTERFACE_LIBS
-    STATIC_INSTALL_INTERFACE_LIBS)
+      SOURCES
+      OUTPUTS
+      STATIC_LINK_LIBS
+      SHARED_LINK_LIBS
+      SHARED_PRIVATE_LINK_LIBS
+      EXTRA_INCLUDES
+      PRIVATE_INCLUDES
+      DEPENDENCIES
+      DEFINITIONS
+      SHARED_INSTALL_INTERFACE_LIBS
+      STATIC_INSTALL_INTERFACE_LIBS)
   cmake_parse_arguments(ARG
-    "${options}"
-    "${one_value_args}"
-    "${multi_value_args}"
-    ${ARGN})
+                        "${options}"
+                        "${one_value_args}"
+                        "${multi_value_args}"
+                        ${ARGN})
 
   if(ARG_UNPARSED_ARGUMENTS)
     message(SEND_ERROR "Error: unrecognized arguments: ${ARG_UNPARSED_ARGUMENTS}")
@@ -144,24 +144,24 @@ function(add_parquet_lib LIB_NAME)
     endif()
 
     set_target_properties(${LIB_NAME}_shared
-      PROPERTIES LINK_FLAGS "${ARG_SHARED_LINK_FLAGS}" OUTPUT_NAME
-      ${LIB_NAME})
+                          PROPERTIES LINK_FLAGS "${ARG_SHARED_LINK_FLAGS}" OUTPUT_NAME
+                                                                           ${LIB_NAME})
 
     target_link_libraries(${LIB_NAME}_shared
-      PUBLIC "$<BUILD_INTERFACE:${ARG_SHARED_LINK_LIBS}>"
+                          PUBLIC "$<BUILD_INTERFACE:${ARG_SHARED_LINK_LIBS}>"
       "$<INSTALL_INTERFACE:${ARG_SHARED_INSTALL_INTERFACE_LIBS}>"
-      PRIVATE ${ARG_SHARED_PRIVATE_LINK_LIBS})
+                          PRIVATE ${ARG_SHARED_PRIVATE_LINK_LIBS})
 
     target_link_libraries(${LIB_NAME}_shared
-      PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
+                          PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
 
     install(TARGETS ${LIB_NAME}_shared
-      EXPORT parquet_targets
-      ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR}
-      LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
-      RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
-      INCLUDES
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+            EXPORT parquet_targets
+            ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR}
+            LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+            RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
+            INCLUDES
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   endif()
 
   if(BUILD_STATIC)
@@ -201,25 +201,26 @@ function(add_parquet_lib LIB_NAME)
 
     if(ARG_STATIC_INSTALL_INTERFACE_LIBS)
       target_link_libraries(${LIB_NAME}_static
-        INTERFACE "$<INSTALL_INTERFACE:${ARG_STATIC_INSTALL_INTERFACE_LIBS}>"
+                            INTERFACE
+"$<INSTALL_INTERFACE:${ARG_STATIC_INSTALL_INTERFACE_LIBS}>"
       )
     endif()
 
     if(ARG_STATIC_LINK_LIBS)
       target_link_libraries(${LIB_NAME}_static
-        PUBLIC "$<BUILD_INTERFACE:${ARG_STATIC_LINK_LIBS}>")
+                            PUBLIC "$<BUILD_INTERFACE:${ARG_STATIC_LINK_LIBS}>")
     endif()
 
     target_link_libraries(${LIB_NAME}_static
-      PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
+                            PUBLIC "$<BUILD_INTERFACE:parquet_sanitizer_flags>")
 
     install(TARGETS ${LIB_NAME}_static
-      EXPORT parquet_targets
-      ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR}
-      LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
-      RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
-      INCLUDES
-      DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+            EXPORT parquet_targets
+            ARCHIVE DESTINATION ${INSTALL_ARCHIVE_DIR}
+            LIBRARY DESTINATION ${INSTALL_LIBRARY_DIR}
+            RUNTIME DESTINATION ${INSTALL_RUNTIME_DIR}
+            INCLUDES
+            DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
   endif()
 
   # generate export header file
@@ -229,7 +230,7 @@ function(add_parquet_lib LIB_NAME)
     if(BUILD_STATIC)
       string(TOUPPER ${LIB_NAME} LIB_NAME_UPPER)
       target_compile_definitions(${LIB_NAME}_static
-        PUBLIC ${LIB_NAME_UPPER}_STATIC_DEFINE)
+                                 PUBLIC ${LIB_NAME_UPPER}_STATIC_DEFINE)
     endif()
   elseif(BUILD_STATIC)
     generate_export_header(${LIB_NAME}_static BASE_NAME ${LIB_NAME})
@@ -238,8 +239,8 @@ function(add_parquet_lib LIB_NAME)
   # Modify variable in calling scope
   if(ARG_OUTPUTS)
     set(${ARG_OUTPUTS}
-      ${${ARG_OUTPUTS}}
-      PARENT_SCOPE)
+        ${${ARG_OUTPUTS}}
+        PARENT_SCOPE)
   endif()
 endfunction()
 
@@ -248,10 +249,10 @@ function(parquet_install_all_headers PATH)
   set(one_value_args)
   set(multi_value_args PATTERN)
   cmake_parse_arguments(ARG
-    "${options}"
-    "${one_value_args}"
-    "${multi_value_args}"
-    ${ARGN})
+                        "${options}"
+                        "${one_value_args}"
+                        "${multi_value_args}"
+                        ${ARGN})
 
   if(NOT ARG_PATTERN)
     set(ARG_PATTERN "*.h" "*.hpp")
