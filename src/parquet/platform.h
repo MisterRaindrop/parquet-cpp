@@ -57,9 +57,9 @@
 #endif  // Non-Windows
 
 #if defined(__GNUC__) || defined(__clang__)
-#define PARQUET_NORETURN __attribute__((noreturn))
+#  define PARQUET_NORETURN __attribute__((noreturn))
 #elif defined(_MSC_VER)
-#define PARQUET_NORETURN __declspec(noreturn)
+#  define PARQUET_NORETURN __declspec(noreturn)
 #else
-#define PARQUET_NORETURN
+#  define PARQUET_NORETURN
 #endif

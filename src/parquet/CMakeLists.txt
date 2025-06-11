@@ -17,9 +17,7 @@
 
 set(PARQUET_INCLUDES "$<BUILD_INTERFACE:${PROJECT_BINARY_DIR}/src>"
                      "$<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src>")
-set(PARQUET_SOURCES
-    exception.cc
-    platform.cc)
+set(PARQUET_SOURCES exception.cc platform.cc)
 
 set(PARQUET_STATIC_BUILD_INTERFACE_LIBS)
 set(PARQUET_SHARED_BUILD_INTERFACE_LIBS)
@@ -41,7 +39,3 @@ add_parquet_lib(parquet
                 ${PARQUET_SHARED_INSTALL_INTERFACE_LIBS})
 
 parquet_install_all_headers(parquet)
-
-
-
-#parquet_install_cmake_package(Parquet parquet_targets)

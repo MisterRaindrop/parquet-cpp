@@ -149,7 +149,7 @@ function(add_parquet_lib LIB_NAME)
 
     target_link_libraries(${LIB_NAME}_shared
                           PUBLIC "$<BUILD_INTERFACE:${ARG_SHARED_LINK_LIBS}>"
-"$<INSTALL_INTERFACE:${ARG_SHARED_INSTALL_INTERFACE_LIBS}>"
+                                 "$<INSTALL_INTERFACE:${ARG_SHARED_INSTALL_INTERFACE_LIBS}>"
                           PRIVATE ${ARG_SHARED_PRIVATE_LINK_LIBS})
 
     target_link_libraries(${LIB_NAME}_shared
@@ -201,8 +201,7 @@ function(add_parquet_lib LIB_NAME)
 
     if(ARG_STATIC_INSTALL_INTERFACE_LIBS)
       target_link_libraries(${LIB_NAME}_static
-                            INTERFACE
-"$<INSTALL_INTERFACE:${ARG_STATIC_INSTALL_INTERFACE_LIBS}>"
+                            INTERFACE "$<INSTALL_INTERFACE:${ARG_STATIC_INSTALL_INTERFACE_LIBS}>"
       )
     endif()
 

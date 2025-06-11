@@ -49,7 +49,7 @@ class PARQUET_EXPORT ParquetException : public std::exception {
   ParquetException& operator=(const ParquetException&) = default;
   ParquetException(ParquetException&&) = default;
   ParquetException& operator=(ParquetException&&) = default;
-  
+
   ~ParquetException() noexcept override = default;
 
   const char* what() const noexcept override { return msg_.c_str(); }
@@ -66,9 +66,11 @@ class PARQUET_EXPORT ParquetStatusException : public ParquetException {
 };
 
 // This class exists for the purpose of detecting an invalid or corrupted file.
-class PARQUET_EXPORT ParquetInvalidOrCorruptedFileException : public ParquetStatusException {
+class PARQUET_EXPORT ParquetInvalidOrCorruptedFileException
+    : public ParquetStatusException {
  public:
-  explicit ParquetInvalidOrCorruptedFileException(std::string msg) : ParquetStatusException(msg) {}
+  explicit ParquetInvalidOrCorruptedFileException(std::string msg)
+      : ParquetStatusException(msg) {}
 
   ~ParquetInvalidOrCorruptedFileException() noexcept override = default;
 };
