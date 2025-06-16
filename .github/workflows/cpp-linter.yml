@@ -36,6 +36,10 @@ jobs:
           fetch-depth: 0
       - name: Run build
         run: |
+          sudo apt-get update
+          sudo apt-get install -y g++-12 libstdc++-12-dev
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-12 100
+          echo "CXX_PATH=/usr/bin/g++-12" >> $GITHUB_ENV
           mkdir build && cd build
           cmake .. -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
           cmake --build .
@@ -48,6 +52,10 @@ jobs:
           style: file
           tidy-checks: ''
           version: 19
+          include: |
+            /usr/include/c++/12
+            /usr/include/x86_64-linux-gnu/c++/12
+            /usr/local/include
           files-changed-only: true
           lines-changed-only: true
           thread-comments: true

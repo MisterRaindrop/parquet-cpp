@@ -15,7 +15,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-# Please set CMAKE_PREFIX_PATH to the install prefix of iceberg.
+# Please set CMAKE_PREFIX_PATH to the install prefix of parquet.
 cmake_minimum_required(VERSION 3.25)
 
 project(example)

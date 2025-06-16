@@ -6,7 +6,7 @@
 # "License"); you may not use this file except in compliance
 # with the License.  You may obtain a copy of the License at
 #
-#   http://www.apache.org/licenses/LICENSE-2.0
+# http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing,
 # software distributed under the License is distributed on an
@@ -20,6 +20,8 @@ cmake_minimum_required(VERSION 3.25)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug)
 endif()
+
+list(PREPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules")
 
 project(Parquet
         VERSION 0.1.0
@@ -38,5 +40,10 @@ set(PARQUET_INSTALL_BINDIR "${CMAKE_INSTALL_BINDIR}")
 set(PARQUET_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}")
 set(PARQUET_INSTALL_CMAKEDIR "${CMAKE_INSTALL_LIBDIR}/cmake")
 set(PARQUET_INSTALL_DOCDIR "${CMAKE_INSTALL_DOCDIR}")
+
+include(ParquetBuildUtils)
+include(ParquetSanitizer)
+
+add_subdirectory(src)
 
 install(FILES LICENSE DESTINATION ${PARQUET_INSTALL_DOCDIR})
